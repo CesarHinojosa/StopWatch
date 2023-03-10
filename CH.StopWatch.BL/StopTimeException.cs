@@ -9,7 +9,7 @@ namespace CH.StopWatch.BL
     public class StopTimeException : Exception
     {
         public StopTimeException()
-            : base("The Stop Watch is already stopped")
+            : base("The Stop Watch needs to start before it is stopped")
         { }
     }
 }

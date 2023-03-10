@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Runtime.InteropServices;
 
 namespace CH.StopWatch.BL
 {
@@ -15,51 +16,77 @@ namespace CH.StopWatch.BL
         //Holds the info for a brief moment 
         public TimeSpan elapsedtime;
 
-
+        //By deafult it is not running 
         bool IsRunning = false;
 
+        bool Cleared = true;
 
-        //property
-        public TimeSpan ElapsedTime 
-        { get 
+        bool stopped = true;
+
+        public TimeSpan ElapsedTime
+        {
+            get
             {
-                if(!IsRunning)
+                if (IsRunning && !Cleared)
                 {
+                    // Clock is running
                     return DateTime.Now - startTime;
-
                 }
-                else if (IsRunning)
+                else if (!IsRunning && !Cleared)
                 {
-                    return stopTime - DateTime.Now;
+                    // Clock has been stopped
+                    return stopTime - startTime;
+                    
                 }
+                
+                // Clock has not been started or has been cleared
                 return elapsedtime;
             }
-            
         }
 
         public void StartingClock()
         {
-            if(IsRunning == false)
+            if (IsRunning && !Cleared)
             {
-                startTime= DateTime.Now;
-                
-            }
-            else 
-            {
+                // Clock is already running
                 throw new StartTimeException();
             }
+
+            else if (Cleared)
+            {
+                // Start the clock
+                startTime = DateTime.Now;
+                IsRunning = true;
+                Cleared = false;
+            }
+          
         }
 
         public void StopClock()
         {
-            if (IsRunning == true)
+            if (!IsRunning)
             {
-                stopTime= DateTime.Now;
-            }
-            else
-            {
+                // Clock is not running
                 throw new StopTimeException();
             }
+            else if(IsRunning &&  !Cleared)
+            {
+                // Stop the clock
+                stopTime = DateTime.Now;
+                stopped = true;
+                IsRunning = false;
+            } 
         }
+
+        public void Reset()
+        {
+            if (!IsRunning && !Cleared)
+            {
+                elapsedtime = TimeSpan.Zero;
+                IsRunning= false;
+                Cleared = true;
+            }
+        }
+
     }
 }
