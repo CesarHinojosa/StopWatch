@@ -8,6 +8,11 @@ namespace CH.StopWatch.BL
         //fields
 
         public DateTime startTime = DateTime.MinValue;
+
+        public DateTime stopTime = DateTime.MinValue;
+
+
+        //Holds the info for a brief moment 
         public TimeSpan elapsedtime;
 
 
@@ -21,8 +26,11 @@ namespace CH.StopWatch.BL
                 if(!IsRunning)
                 {
                     return DateTime.Now - startTime;
-                    IsRunning = false;
-                    
+
+                }
+                else if (IsRunning)
+                {
+                    return stopTime - DateTime.Now;
                 }
                 return elapsedtime;
             }
@@ -39,6 +47,18 @@ namespace CH.StopWatch.BL
             else 
             {
                 throw new StartTimeException();
+            }
+        }
+
+        public void StopClock()
+        {
+            if (IsRunning == true)
+            {
+                stopTime= DateTime.Now;
+            }
+            else
+            {
+                throw new StopTimeException();
             }
         }
     }
