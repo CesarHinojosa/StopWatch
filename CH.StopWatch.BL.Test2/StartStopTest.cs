@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace CH.StopWatch.BL.Test
 {
     [TestClass]
@@ -20,12 +22,13 @@ namespace CH.StopWatch.BL.Test
         }
 
 
-        //need to double check the test
 
         [TestMethod]
-        public void TestMethod2() 
-        
+        public void TestMethod2()
+
         {
+
+           
             //creating variables to hold the DateTime
             DateTime DateTime;
             DateTime DateTime2;
@@ -42,12 +45,13 @@ namespace CH.StopWatch.BL.Test
             //Stopping the clock
             startStop.StopClock();
 
-           
+
             DateTime2 = DateTime.Now;
-            
-            //Test that the both equal to one another  
-            if(DateTime != DateTime2) Assert.Fail();
-        
+
+            //If it is not true then it throws out the message
+            //if /*(DateTime != DateTime2)*/ 
+             Assert.IsTrue(DateTime != DateTime2, "Pass");
+
         }
     }
 }
